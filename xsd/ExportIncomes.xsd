@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    xmlns:com="http://roskazna.ru/gisgmp/xsd/Common/2.4.0"
+    xmlns:inc="http://roskazna.ru/gisgmp/xsd/Income/2.4.0"
+    xmlns:sc="http://roskazna.ru/gisgmp/xsd/SearchConditions/2.4.0"
+    targetNamespace="urn://roskazna.ru/gisgmp/xsd/services/export-incomes/2.4.0"
+    xmlns="urn://roskazna.ru/gisgmp/xsd/services/export-incomes/2.4.0">
+    <xs:import namespace="http://roskazna.ru/gisgmp/xsd/Common/2.4.0"
+        schemaLocation="commons/Common.xsd"/>
+    <xs:import namespace="http://roskazna.ru/gisgmp/xsd/Income/2.4.0"
+        schemaLocation="commons/Income.xsd"/>
+    <xs:import namespace="http://roskazna.ru/gisgmp/xsd/SearchConditions/2.4.0"
+        schemaLocation="commons/SearchConditions.xsd"/>
+    <xs:element name="ExportIncomesRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на предоставление информации о зачислении</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="com:ExportRequestType">
+                    <xs:sequence>
+                        <xs:element ref="sc:IncomesExportConditions">
+                            <xs:annotation>
+                                <xs:documentation>Условия для предоставления информации о зачислении</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ExportIncomesResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос предоставления информации о зачислении</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="com:ResponseType">
+                    <xs:sequence minOccurs="0">
+                        <xs:element name="IncomeInfo" maxOccurs="100">
+                            <xs:annotation>
+                                <xs:documentation>Извещение о зачислении</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="inc:IncomeType">
+                                        <xs:sequence>
+                                            <xs:element ref="com:ChangeStatusInfo">
+                                                <xs:annotation>
+                                                  <xs:documentation>Сведения о статусе зачисления и основаниях его изменения</xs:documentation>
+                                                </xs:annotation>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="hasMore" type="xs:boolean" use="required">
+                        <xs:annotation>
+                            <xs:documentation>Признак конца выборки:
+                                false - достигнут конец выборки;
+                                true - после последнего предоставленного элемента в выборке имеются другие.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

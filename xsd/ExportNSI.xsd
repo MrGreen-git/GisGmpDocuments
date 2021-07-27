@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	targetNamespace="urn://roskazna.ru/gisgmp/xsd/services/export-nsi/2.4.0"
+	xmlns:nsi="urn://roskazna.ru/gisgmp/xsd/services/export-nsi/2.4.0"
+	xmlns:com="http://roskazna.ru/gisgmp/xsd/Common/2.4.0"
+	xmlns:cn="http://roskazna.ru/gisgmp/xsd/Common-nsi/2.4.0"
+	xmlns:ns1="http://roskazna.ru/gisgmp/xsd/Common/2.4.0">
+
+	<xs:import namespace="http://roskazna.ru/gisgmp/xsd/Common/2.4.0"
+		schemaLocation="commons/Common.xsd"/>
+	<xs:import namespace="http://roskazna.ru/gisgmp/xsd/Common-nsi/2.4.0"
+		schemaLocation="commons/Common-nsi.xsd"/>
+	<xs:element name="ExportNSIRequest">
+		<xs:annotation>
+			<xs:documentation>Запрос на предоставление из ГИС ГМП нормативно-справочной
+				информации</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="com:RequestType">
+					<xs:sequence>
+						<xs:element name="NSIExportConditions">
+							<xs:annotation>
+								<xs:documentation>Условия для предоставления нормативно-справочной
+							информации</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:choice>
+									<xs:element name="PayeeData">
+										<xs:annotation>
+											<xs:documentation>Данные для идентификации получателя средств</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:attribute name="inn" type="com:INNType"
+												use="required">
+												<xs:annotation>
+												<xs:documentation>ИНН организации, являющейся получателем
+									средств</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute name="kpp" type="com:KPPType"
+												use="required">
+												<xs:annotation>
+												<xs:documentation>КПП организации, являющейся получателем
+									средств</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="oktmo">
+										<xs:annotation>
+											<xs:documentation>Код по ОКТМО организации, являющейся получателем средств</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:pattern value="\d{8}|\d{11}"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="originatorId" type="com:URNType">
+						<xs:annotation>
+							<xs:documentation>УРН участника косвенного взаимодействия, сформировавшего запрос</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ExportNSIResponse">
+		<xs:annotation>
+			<xs:documentation>Ответ на запрос предоставления из ГИС ГМП нормативно-справочной
+				информации</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="com:ResponseType">
+					<xs:choice minOccurs="0">
+						<xs:element name="PayeeNSIInfo" type="cn:PayeeNSIInfoType">
+							<xs:annotation>
+								<xs:documentation>Нормативно-справочная информация об участнике - получателе средств</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="oktmoNSIInfo" type="cn:oktmoNSIInfoType">
+							<xs:annotation>
+								<xs:documentation>Нормативно-справочная информация о коде по ОКТМО</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

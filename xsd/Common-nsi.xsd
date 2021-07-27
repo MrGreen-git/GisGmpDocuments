@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:cn="http://roskazna.ru/gisgmp/xsd/Common-nsi/2.4.0"
+	xmlns:com="http://roskazna.ru/gisgmp/xsd/Common/2.4.0"
+	targetNamespace="http://roskazna.ru/gisgmp/xsd/Common-nsi/2.4.0" elementFormDefault="qualified">
+	<xs:import namespace="http://roskazna.ru/gisgmp/xsd/Common/2.4.0" schemaLocation="Common.xsd"/>
+	<xs:complexType name="PayeeNSIInfoType">
+		<xs:annotation>
+			<xs:documentation>Данные о нормативно-справочной информации об участнике - получателе средств</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="KBKlist" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Перечень КБК</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="kbk" type="com:KBKType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>КБК</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OrgKSllist" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Перечень реквизитов счетов организации</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OrgKS" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Реквизиты счета организации</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="KSNumber" type="com:AccountNumType"
+									use="required">
+									<xs:annotation>
+										<xs:documentation>Номер казначейского счета</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="bik" type="com:BIKType">
+									<xs:annotation>
+										<xs:documentation>БИК ТОФК</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="bankAccountNumber" type="com:AccountNumType"
+									use="required">
+									<xs:annotation>
+										<xs:documentation>Номер единого казначейского счета</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="statKS" use="required">
+									<xs:annotation>
+										<xs:documentation>Статус казначейского счета</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:minLength value="3"/>
+											<xs:maxLength value="3"/>
+											<xs:enumeration value="KS1"/>
+											<xs:enumeration value="KS2"/>
+											<xs:enumeration value="KS3"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="dateIn" type="xs:date" use="required">
+									<xs:annotation>
+										<xs:documentation>Дата вступления изменений в силу</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" use="required">
+			<xs:annotation>
+				<xs:documentation>Наименование организации</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+					<xs:maxLength value="2000"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="inn" type="com:INNType" use="required">
+			<xs:annotation>
+				<xs:documentation>ИНН организации</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="kpp" type="com:KPPType" use="required">
+			<xs:annotation>
+				<xs:documentation>КПП организации</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="kbkGlavaCode">
+			<xs:annotation>
+				<xs:documentation>Код Главы по бюджетной классификации</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:length value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="orgStatus" use="required">
+			<xs:annotation>
+				<xs:documentation>Код статуса организации</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+					<xs:maxLength value="1"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="4"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="updateDate" type="xs:dateTime" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата и время обновления справочника</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="directoryUBPType">
+		<xs:annotation>
+			<xs:documentation>Данные справочника Участников бюджетного процесса (УБП)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PayeeNSIInfo" type="cn:PayeeNSIInfoType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Нормативно-справочная информация об участнике-получателе средств</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="oktmoNSIInfoType">
+		<xs:annotation>
+			<xs:documentation>Данные о нормативно-справочной информации о коде по ОКТМО</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="regionCode" use="required">
+			<xs:annotation>
+				<xs:documentation>Код региона</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="2"/>
+					<xs:maxLength value="2"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="areaCode" use="required">
+			<xs:annotation>
+				<xs:documentation>Код района/города МО</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="3"/>
+					<xs:maxLength value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="cityCode" use="required">
+			<xs:annotation>
+				<xs:documentation>Код поселения МО</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="3"/>
+					<xs:maxLength value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="localCode">
+			<xs:annotation>
+				<xs:documentation>Код населенного пункта МО</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="3"/>
+					<xs:maxLength value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="controlNum" use="required">
+			<xs:annotation>
+				<xs:documentation>Контрольное число</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+					<xs:maxLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="section" use="required">
+			<xs:annotation>
+				<xs:documentation>Код раздела</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+					<xs:maxLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="code" use="required">
+			<xs:annotation>
+				<xs:documentation>Код (совокупный код)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="\d{8}|\d{11}"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="name" use="required">
+			<xs:annotation>
+				<xs:documentation>Наименование территории</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="500"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="centreName">
+			<xs:annotation>
+				<xs:documentation>Дополнительная информация</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="250"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="clarification">
+			<xs:annotation>
+				<xs:documentation>Описание</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="8000"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="lastChangeNum" use="required">
+			<xs:annotation>
+				<xs:documentation>Номер изменения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="lastChangeType" use="required">
+			<xs:annotation>
+				<xs:documentation>Тип изменения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="1"/>
+					<xs:minLength value="1"/>
+					<xs:maxLength value="1"/>
+					<xs:enumeration value="2"/>
+					<xs:enumeration value="3"/>
+					<xs:enumeration value="0"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="changeDate" type="xs:date" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата принятия</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="introductionDate" type="xs:date" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата введения</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="updateDate" type="xs:dateTime" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата и время обновления справочника</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="directoryOKTMOType">
+		<xs:annotation>
+			<xs:documentation>Данные справочника ОКТМО</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="oktmoNSIInfo" type="cn:oktmoNSIInfoType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Нормативно-справочная информация о коде по ОКТМО</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

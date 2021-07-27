@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:com="http://roskazna.ru/gisgmp/xsd/Common/2.4.0"
+    xmlns="urn://roskazna.ru/gisgmp/xsd/services/import-paymentcheck/2.4.0"    
+    targetNamespace="urn://roskazna.ru/gisgmp/xsd/services/import-paymentcheck/2.4.0"
+    elementFormDefault="qualified" xmlns:org="http://roskazna.ru/gisgmp/xsd/Organization/2.4.0">
+    <xsd:import namespace="http://roskazna.ru/gisgmp/xsd/Common/2.4.0" schemaLocation="commons/Common.xsd"/>
+    <xsd:import namespace="http://roskazna.ru/gisgmp/xsd/Organization/2.4.0" schemaLocation="commons/Organization.xsd"/>
+    <xsd:element name="PaymentCheckRequest">
+        <xsd:annotation>
+            <xsd:documentation>Прием запроса проверки значений реквизитов распоряжения о переводе денежных средств</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="com:RequestType">
+                    <xsd:sequence>
+                        <xsd:element name="PaymentTemplate">
+                            <xsd:annotation>
+                                <xsd:documentation>Данные необходимые для приема информации об уплате</xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element ref="org:Payee">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Сведения о получателе средств</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:element>
+                                </xsd:sequence>
+                                <xsd:attribute name="supplierBillID">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Поле номер 1000:
+УИН</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:union memberTypes="com:SupplierBillIDType">
+                                            <xsd:simpleType>
+                                                <xsd:restriction base="xsd:string">
+                                                    <xsd:pattern value="\d{15}"/>
+                                                    <xsd:pattern value="0"/>
+                                                </xsd:restriction>
+                                            </xsd:simpleType>
+                                        </xsd:union>
+                                    </xsd:simpleType>
+                                </xsd:attribute>
+                                <xsd:attribute name="receiptDate" type="xsd:date">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Дата поступления распоряжения в банк плательщика</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:attribute>
+                                <xsd:attribute name="kbk" type="com:KBKType">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Поле номер 104: КБК.
+                </xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:attribute>
+                                <xsd:attribute name="oktmo" type="com:OKTMOType">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Поле номер 105:
+Код ОКТМО, указанный в распоряжении о переводе денежных средств.
+                </xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:attribute>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="PaymentCheckResponse">
+        <xsd:annotation>
+            <xsd:documentation>Ответ на запрос проверки значений реквизитов распоряжения о переводе денежных средств</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="com:ResponseType">
+                    <xsd:sequence>
+                        <xsd:element name="ImportProtocol">
+                            <xsd:annotation>
+                                <xsd:documentation>Результат обработки сущности</xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:complexContent>
+                                    <xsd:extension base="com:ImportProtocolType">
+                                        <xsd:attribute name="requisiteCheckCode" type="com:RequisiteCheckCodeType">
+                                            <xsd:annotation>
+                                                <xsd:documentation>КПР или код и описание ошибки</xsd:documentation>
+                                            </xsd:annotation>
+                                        </xsd:attribute>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+

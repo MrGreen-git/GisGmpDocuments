@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:cn="http://roskazna.ru/gisgmp/xsd/Common-nsi/2.4.0"
+	xmlns:ns1="urn://roskazna.ru/gisgmp/xsd/services/SubscriptionService/attachments/directoryUBP/2.4.0"
+	xmlns:ns2="urn://roskazna.ru/gisgmp/xsd/services/SubscriptionService/attachments/directoryUBP/2.4.0"
+	xmlns:ns3="http://roskazna.ru/gisgmp/xsd/Common-nsi/2.2.1"
+	targetNamespace="urn://roskazna.ru/gisgmp/xsd/services/SubscriptionService/attachments/directoryUBP/2.4.0"
+	elementFormDefault="qualified">
+	<xs:import namespace="http://roskazna.ru/gisgmp/xsd/Common-nsi/2.4.0"
+		schemaLocation="commons/Common-nsi.xsd"/>
+	<xs:element name="directoryUBP" type="cn:directoryUBPType">
+		<xs:annotation>
+			<xs:documentation>Справочник Участников бюджетного процесса (УБП)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>
